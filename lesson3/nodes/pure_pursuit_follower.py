@@ -9,7 +9,7 @@ from geometry_msgs.msg import PoseStamped
 from tf.transformations import euler_from_quaternion
 
 from shapely.geometry import LineString, Point
-from shapely import prepare, distance
+from shapely import prepare
 from scipy.interpolate import interp1d
 
 class PurePursuitFollower:
@@ -55,17 +55,13 @@ class PurePursuitFollower:
             self.distance_to_velocity_interpolator = distance_to_velocity_interpolator
 
     def current_pose_callback(self, msg):
-        if self.path_linestring is None:
+        if self.path_linestring is None or self.distance_to_velocity_interpolator is None:
 
             steering_angle = 0.0
             linear_velocity = 0.0
-            linear_acceleration = -3.0
         else:
             current_pose = Point([msg.pose.position.x, msg.pose.position.y])
             d_ego_from_path_start = self.path_linestring.project(current_pose)
-
-            linear_velocity = 0.0
-            linear_acceleration = 0.0
 
             # Get heading from current pose orientation
             _, _, heading = euler_from_quaternion([msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w])
@@ -74,13 +70,11 @@ class PurePursuitFollower:
             lookahead_point = self.path_linestring.interpolate(d_ego_from_path_start + self.lookahead_distance)
             # Calculate lookahead heading
             lookahead_heading = np.arctan2(lookahead_point.y - msg.pose.position.y, lookahead_point.x - msg.pose.position.x) 
-            # Recalculate the actual lookahead distance (direct distance between points)
-            ld = Point(msg.pose.position.x, msg.pose.position.y).distance(lookahead_point)
             # Calculate steering angle using the Pure Pursuit formula
-            steering_angle = np.arctan2(2 * self.wheel_base * np.sin(lookahead_heading - heading), ld)
+            steering_angle = np.arctan2(2 * self.wheel_base * np.sin(lookahead_heading - heading), current_pose.distance(lookahead_point))
 
             if self.distance_to_velocity_interpolator is not None:
-                linear_velocity = self.distance_to_velocity_interpolator(d_ego_from_path_start)
+                linear_velocity = float(self.distance_to_velocity_interpolator(d_ego_from_path_start))
 
 
         # TODO 2: Create and publish a VehicleCommand message with constant steering angle and velocity for testing.
@@ -88,8 +82,8 @@ class PurePursuitFollower:
         vehicle_cmd.header.stamp = msg.header.stamp
         vehicle_cmd.header.frame_id = "base_link"
         vehicle_cmd.steering_angle = steering_angle
-        vehicle_cmd.speed = 10
-        vehicle_cmd.acceleration = 0
+        vehicle_cmd.speed = linear_velocity
+        vehicle_cmd.acceleration = 0.0
         self.vehicle_cmd_pub.publish(vehicle_cmd)
 
     def run(self):
