@@ -59,9 +59,12 @@ class PurePursuitFollower:
 
             steering_angle = 0.0
             linear_velocity = 0.0
+            linear_acceleration = -3.0
         else:
             current_pose = Point([msg.pose.position.x, msg.pose.position.y])
             d_ego_from_path_start = self.path_linestring.project(current_pose)
+
+            linear_acceleration = 0.0
 
             # Get heading from current pose orientation
             _, _, heading = euler_from_quaternion([msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w])
@@ -71,10 +74,11 @@ class PurePursuitFollower:
             # Calculate lookahead heading
             lookahead_heading = np.arctan2(lookahead_point.y - msg.pose.position.y, lookahead_point.x - msg.pose.position.x) 
             # Calculate steering angle using the Pure Pursuit formula
-            steering_angle = np.arctan2(2 * self.wheel_base * np.sin(lookahead_heading - heading), current_pose.distance(lookahead_point))
+            alpha = lookahead_heading - heading
+            ld = current_pose.distance(lookahead_point)
+            steering_angle = np.arctan2(2 * self.wheel_base * np.sin(alpha), ld)
 
-            if self.distance_to_velocity_interpolator is not None:
-                linear_velocity = float(self.distance_to_velocity_interpolator(d_ego_from_path_start))
+            linear_velocity = float(self.distance_to_velocity_interpolator(d_ego_from_path_start))
 
 
         # TODO 2: Create and publish a VehicleCommand message with constant steering angle and velocity for testing.
@@ -83,7 +87,7 @@ class PurePursuitFollower:
         vehicle_cmd.header.frame_id = "base_link"
         vehicle_cmd.steering_angle = steering_angle
         vehicle_cmd.speed = linear_velocity
-        vehicle_cmd.acceleration = 0.0
+        vehicle_cmd.acceleration = linear_acceleration
         self.vehicle_cmd_pub.publish(vehicle_cmd)
 
     def run(self):
