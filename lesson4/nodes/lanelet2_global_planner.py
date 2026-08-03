@@ -57,6 +57,10 @@ class GlobalPlanner:
         with self.lock:
             self.goal_point = BasicPoint2d(msg.pose.position.x, msg.pose.position.y)
 
+        rospy.loginfo("%s - goal position (%f, %f, %f) in %s frame", rospy.get_name(),
+                      msg.pose.position.x, msg.pose.position.y, msg.pose.position.z,
+                      msg.header.frame_id)
+
         if self.current_location is None:
             return
 
@@ -92,12 +96,8 @@ class GlobalPlanner:
         distance_to_goal = np.sqrt((self.current_location.x - self.goal_point.x) ** 2 +
                                     (self.current_location.y - self.goal_point.y) ** 2)
 
-        path = Path()
-        path.header.frame_id = self.output_frame
-        path.header.stamp = rospy.Time.now()
-        self.global_path_pub.publish(path)
-        
         if distance_to_goal < self.distance_to_goal_limit:
+            self.publish_lane_from_waypoints_list([])
             rospy.loginfo("%s - Goal reached", rospy.get_name())
             self.goal_point = None
 
@@ -106,11 +106,11 @@ class GlobalPlanner:
 
         for j, lanelet in enumerate(laneletseq):
             # Get speed from lanelet attribute or use global speed limit. The speed limit is in km/h, convert to m/s for the Waypoint message.
-            speed = self.speed_limit / 3.6
-            # Ensure speed does not exceed global speed limit
-            speed = min(speed, self.speed_limit / 3.6)  
+            speed = min(float(lanelet.attributes['speed_ref']), self.speed_limit) / 3.6
 
-            # Iterate through the centerline points and create waypoints. 
+            last_lanelet_start = len(waypoints)
+
+            # Iterate through the centerline points and create waypoints.
             for i, point in enumerate(lanelet.centerline):
                 # Skip first point of every lanelet except the very first (endpoints overlap)
                 if i == 0 and j != 0:
@@ -122,11 +122,20 @@ class GlobalPlanner:
                 waypoint.speed = speed
                 waypoints.append(waypoint)
 
-            # If this is the last lanelet, sync the path end with the goal point.
-            if j == len(laneletseq) - 1 and waypoints and self.goal_point is not None:
-                waypoints[-1].position.x = self.goal_point.x
-                waypoints[-1].position.y = self.goal_point.y
-                waypoints[-1].position.z = 0.0
+            # If this is the last lanelet, sync the path end with the goal point: find the waypoint
+            # closest to the goal, drop the rest and move the goal onto that waypoint.
+            if j == len(laneletseq) - 1 and self.goal_point is not None and len(waypoints) > last_lanelet_start:
+                closest_idx = last_lanelet_start
+                min_distance = float('inf')
+                for k in range(last_lanelet_start, len(waypoints)):
+                    distance = np.sqrt((waypoints[k].position.x - self.goal_point.x) ** 2 +
+                                       (waypoints[k].position.y - self.goal_point.y) ** 2)
+                    if distance < min_distance:
+                        min_distance = distance
+                        closest_idx = k
+
+                waypoints = waypoints[:closest_idx + 1]
+                self.goal_point = BasicPoint2d(waypoints[-1].position.x, waypoints[-1].position.y)
 
         return waypoints
 
