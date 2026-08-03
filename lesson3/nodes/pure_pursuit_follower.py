@@ -55,14 +55,18 @@ class PurePursuitFollower:
             self.distance_to_velocity_interpolator = distance_to_velocity_interpolator
 
     def current_pose_callback(self, msg):
-        if self.path_linestring is None or self.distance_to_velocity_interpolator is None:
+        with self.lock:
+            path_linestring = self.path_linestring
+            distance_to_velocity_interpolator = self.distance_to_velocity_interpolator
+
+        if path_linestring is None or distance_to_velocity_interpolator is None:
 
             steering_angle = 0.0
             linear_velocity = 0.0
             linear_acceleration = -3.0
         else:
             current_pose = Point([msg.pose.position.x, msg.pose.position.y])
-            d_ego_from_path_start = self.path_linestring.project(current_pose)
+            d_ego_from_path_start = path_linestring.project(current_pose)
 
             linear_acceleration = 0.0
 
@@ -70,7 +74,7 @@ class PurePursuitFollower:
             _, _, heading = euler_from_quaternion([msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w])
 
             # Calculate lookahead point on the path
-            lookahead_point = self.path_linestring.interpolate(d_ego_from_path_start + self.lookahead_distance)
+            lookahead_point = path_linestring.interpolate(d_ego_from_path_start + self.lookahead_distance)
             # Calculate lookahead heading
             lookahead_heading = np.arctan2(lookahead_point.y - msg.pose.position.y, lookahead_point.x - msg.pose.position.x) 
             # Calculate steering angle using the Pure Pursuit formula
@@ -78,10 +82,8 @@ class PurePursuitFollower:
             ld = current_pose.distance(lookahead_point)
             steering_angle = np.arctan2(2 * self.wheel_base * np.sin(alpha), ld)
 
-            linear_velocity = float(self.distance_to_velocity_interpolator(d_ego_from_path_start))
+            linear_velocity = float(distance_to_velocity_interpolator(d_ego_from_path_start))
 
-
-        # TODO 2: Create and publish a VehicleCommand message with constant steering angle and velocity for testing.
         vehicle_cmd = VehicleCommand()
         vehicle_cmd.header.stamp = msg.header.stamp
         vehicle_cmd.header.frame_id = "base_link"
