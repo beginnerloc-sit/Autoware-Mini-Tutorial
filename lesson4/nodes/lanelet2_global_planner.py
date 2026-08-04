@@ -106,7 +106,10 @@ class GlobalPlanner:
 
         for j, lanelet in enumerate(laneletseq):
             # Get speed from lanelet attribute or use global speed limit. The speed limit is in km/h, convert to m/s for the Waypoint message.
-            speed = min(float(lanelet.attributes['speed_ref']), self.speed_limit) / 3.6
+            if 'speed_ref' in lanelet.attributes:
+                speed = min(float(lanelet.attributes['speed_ref']), self.speed_limit) / 3.6
+            else:
+                speed = self.speed_limit / 3.6
 
             last_lanelet_start = len(waypoints)
 
