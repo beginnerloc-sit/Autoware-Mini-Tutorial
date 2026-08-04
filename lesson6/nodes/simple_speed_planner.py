@@ -57,7 +57,7 @@ class SimpleSpeedPlanner:
     def collision_points_and_path_callback(self, collision_points_msg, local_path_msg):
         try:
             with self.lock:
-                collision_points = numpify(collision_points_msg) if len(collision_points_msg.data) > 0 else np.array([])
+                collision_points = np.atleast_1d(numpify(collision_points_msg)) if len(collision_points_msg.data) > 0 else np.array([])
                 current_position = self.current_position
                 current_speed = self.current_speed
 
@@ -94,7 +94,7 @@ class SimpleSpeedPlanner:
             target_velocity = calculated_target_velocities[target_index]
             target_object_distance = collision_point_distances[target_index] - self.distance_to_car_front
             target_object_speed = collision_point_speeds[target_index]
-            stopping_point_distance = collision_point_distances[target_index] - collision_point_braking_distances[target_index]
+            stopping_point_distance = collision_point_distances[target_index] - collision_points[target_index]['distance_to_stop']
             collision_point_category = collision_points[target_index]['category']
 
             for wp in local_path_msg.waypoints:
