@@ -5,9 +5,10 @@ import shapely
 import math
 import numpy as np
 import threading
-import lanelet2
+from lanelet2.io import Origin, load
+from lanelet2.projection import UtmProjector
 from ros_numpy import msgify
-from autoware_mini.msg import Path, DetectedObjectArray, StopLineStatusArray
+from autoware_mini.msg import Path, DetectedObjectArray, StopLineStatus, StopLineStatusArray
 from sensor_msgs.msg import PointCloud2
 
 # Collision point categories: 0 = none, 1 = goal, 2 = traffic light, 3 = static obstacle, 4 = moving obstacle
@@ -39,8 +40,19 @@ class SimpleCollisionChecker:
         #                    load the lanelet2 map and extract the stop lines with traffic lights
 
         self.braking_safety_distance_stopline = rospy.get_param("~braking_safety_distance_stopline")
+
         lanelet2_map_path = rospy.get_param("~lanelet2_map_path")
-        lanelet2_map = self.load_lanelet2_map(lanelet2_map_path)
+        coordinate_transformer = rospy.get_param("/localization/coordinate_transformer")
+        use_custom_origin = rospy.get_param("/localization/use_custom_origin")
+        utm_origin_lat = rospy.get_param("/localization/utm_origin_lat")
+        utm_origin_lon = rospy.get_param("/localization/utm_origin_lon")
+
+        if coordinate_transformer == "utm":
+            projector = UtmProjector(Origin(utm_origin_lat, utm_origin_lon), use_custom_origin, False)
+        else:
+            raise RuntimeError('Only "utm" is supported for lanelet2 map loading')
+        lanelet2_map = load(lanelet2_map_path, projector)
+
         self.stop_lines = self.get_traffic_light_stop_lines(lanelet2_map)
 
 
@@ -127,11 +139,11 @@ class SimpleCollisionChecker:
 
         # TODO 9 (lesson 7): add stop line collision points for red traffic lights
         for stop_line_id, stop_line in self.stop_lines.items():
-            if self.stopline_statuses.get(stop_line_id) == StopLineStatusArray.RED:
-                if local_path_buffer.intersects(stop_line.buffer(0.1)):
-                    stop_line_midpoint = stop_line.interpolate(0.5, normalized=True)
+            if self.stopline_statuses.get(stop_line_id) == StopLineStatus.STATUS_STOP:
+                if local_path_linestring.intersects(stop_line):
+                    intersection_point = shapely.get_coordinates(local_path_linestring.intersection(stop_line))[0]
                     collision_points = np.append(collision_points, np.array([(
-                        stop_line_midpoint.x, stop_line_midpoint.y, 0.0,
+                        intersection_point[0], intersection_point[1], 0.0,
                         0.0, 0.0, 0.0,
                         self.braking_safety_distance_stopline,
                         np.inf,
@@ -165,13 +177,6 @@ class SimpleCollisionChecker:
                 stop_lines[stop_line.id] = shapely.LineString([(p.x, p.y) for p in stop_line])
 
         return stop_lines
-
-    @staticmethod
-    def load_lanelet2_map(lanelet2_map_path):
-        """Load a Lanelet2 map from a file path."""
-        origin = lanelet2.io.Origin(0.0, 0.0)
-        projector = lanelet2.projection.UtmProjector(origin)
-        return lanelet2.io.load(lanelet2_map_path, projector)
 
 
 if __name__ == '__main__':

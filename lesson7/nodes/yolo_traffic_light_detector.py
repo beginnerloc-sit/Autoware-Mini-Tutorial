@@ -139,8 +139,6 @@ class YoloTrafficLightDetector:
                 if path_line.intersects(stop_line):
                     stop_line_ids_on_path.append(stop_line_id)
 
-            print(f"Stop line IDs on path: {stop_line_ids_on_path}")
-
         with self.lock:
             self.stop_line_ids_on_path = stop_line_ids_on_path
             self.transform_from_frame = local_path_msg.header.frame_id
@@ -183,7 +181,7 @@ class YoloTrafficLightDetector:
             # TODO 2: Extract the transform between transform_to_frame and transform_from_frame
             #         at image_time_stamp using self.tf_buffer, then calculate the map ROIs:
             try:
-                transform = self.tf_buffer.lookup_transform(transform_to_frame, transform_from_frame, image_time_stamp)
+                transform = self.tf_buffer.lookup_transform(transform_to_frame, transform_from_frame, image_time_stamp, rospy.Duration(self.transform_timeout))
             except (tf2_ros.TransformException, rospy.ROSTimeMovedBackwardsException) as e:
                 rospy.logwarn("%s - %s", rospy.get_name(), e)
                 return
@@ -221,6 +219,10 @@ class YoloTrafficLightDetector:
                     point_camera = do_transform_point(PointStamped(point=point_map), transform).point
 
                     u, v = self.camera_model.project3dToPixel((point_camera.x, point_camera.y, point_camera.z))
+
+                    # traffic light is not (fully) visible in this camera
+                    if point_camera.z < 0 or not (0 <= u < self.camera_model.width) or not (0 <= v < self.camera_model.height):
+                        break
 
                     # convert the extent in meters to extent in pixels
                     extent_x_px = self.camera_model.fx() * self.roi_width_extent / point_camera.z
