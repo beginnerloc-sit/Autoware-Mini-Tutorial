@@ -5,22 +5,22 @@
 Actor(id=276, type=vehicle.lexus.utlexus); 
 
  > NPC vehicles:
-Actor(id=1166, type=vehicle.ford.mustang); Actor(id=1167, type=vehicle.audi.tt); Actor(id=1168, type=vehicle.vespa.zx125); Actor(id=1169, type=vehicle.mitsubishi.fusorosa); Actor(id=1170, type=vehicle.yamaha.yzf); Actor(id=1171, type=vehicle.kawasaki.ninja); Actor(id=1172, type=vehicle.mercedes.coupe); Actor(id=1173, type=vehicle.volkswagen.t2_2021); Actor(id=1174, type=vehicle.harley-davidson.low_rider); Actor(id=1175, type=vehicle.mitsubishi.fusorosa); Actor(id=1176, type=vehicle.tesla.cybertruck); Actor(id=1177, type=vehicle.ford.mustang); Actor(id=1178, type=vehicle.ford.mustang); Actor(id=1179, type=vehicle.ford.mustang); Actor(id=1180, type=vehicle.ford.mustang); Actor(id=1181, type=vehicle.ford.mustang); Actor(id=1182, type=vehicle.ford.mustang); Actor(id=1183, type=vehicle.ford.mustang); Actor(id=1184, type=vehicle.ford.mustang); Actor(id=1185, type=vehicle.ford.mustang); Actor(id=1186, type=vehicle.ford.mustang); Actor(id=1187, type=vehicle.ford.mustang); Actor(id=1188, type=vehicle.ford.mustang); 
+Actor(id=1364, type=vehicle.ford.mustang); Actor(id=1365, type=vehicle.audi.tt); Actor(id=1366, type=vehicle.vespa.zx125); Actor(id=1367, type=vehicle.mitsubishi.fusorosa); Actor(id=1368, type=vehicle.yamaha.yzf); Actor(id=1369, type=vehicle.kawasaki.ninja); Actor(id=1370, type=vehicle.mercedes.coupe); Actor(id=1371, type=vehicle.volkswagen.t2_2021); Actor(id=1372, type=vehicle.harley-davidson.low_rider); Actor(id=1373, type=vehicle.mitsubishi.fusorosa); Actor(id=1374, type=vehicle.tesla.cybertruck); Actor(id=1375, type=vehicle.ford.mustang); Actor(id=1376, type=vehicle.ford.mustang); Actor(id=1377, type=vehicle.ford.mustang); Actor(id=1378, type=vehicle.ford.mustang); Actor(id=1379, type=vehicle.ford.mustang); Actor(id=1380, type=vehicle.ford.mustang); Actor(id=1381, type=vehicle.ford.mustang); Actor(id=1382, type=vehicle.ford.mustang); Actor(id=1383, type=vehicle.ford.mustang); Actor(id=1384, type=vehicle.ford.mustang); Actor(id=1385, type=vehicle.ford.mustang); Actor(id=1386, type=vehicle.ford.mustang); 
 
  > Pedestrians:
-Actor(id=1190, type=walker.pedestrian.0002); Actor(id=1191, type=walker.pedestrian.0003); Actor(id=1192, type=walker.pedestrian.0004); Actor(id=1193, type=walker.pedestrian.0005); Actor(id=1194, type=walker.pedestrian.0006); Actor(id=1195, type=walker.pedestrian.0007); Actor(id=1196, type=walker.pedestrian.0008); Actor(id=1197, type=walker.pedestrian.0009); Actor(id=1198, type=walker.pedestrian.0010); Actor(id=1199, type=walker.pedestrian.0011); Actor(id=1200, type=walker.pedestrian.0012); Actor(id=1201, type=walker.pedestrian.0013); Actor(id=1202, type=walker.pedestrian.0014); Actor(id=1203, type=walker.pedestrian.0015); Actor(id=1204, type=walker.pedestrian.0041); 
+Actor(id=1388, type=walker.pedestrian.0002); Actor(id=1389, type=walker.pedestrian.0003); Actor(id=1390, type=walker.pedestrian.0004); Actor(id=1391, type=walker.pedestrian.0005); Actor(id=1392, type=walker.pedestrian.0006); Actor(id=1393, type=walker.pedestrian.0007); Actor(id=1394, type=walker.pedestrian.0008); Actor(id=1395, type=walker.pedestrian.0009); Actor(id=1396, type=walker.pedestrian.0010); Actor(id=1397, type=walker.pedestrian.0011); Actor(id=1398, type=walker.pedestrian.0012); Actor(id=1399, type=walker.pedestrian.0013); Actor(id=1400, type=walker.pedestrian.0014); Actor(id=1401, type=walker.pedestrian.0015); Actor(id=1402, type=walker.pedestrian.0041); 
 
  > Simulation Information
 ╒═══════════════════════╤═════════════════════╕
-│ Start Time            │ 2026-08-06 13:20:31 │
+│ Start Time            │ 2026-08-06 13:53:49 │
 ├───────────────────────┼─────────────────────┤
-│ End Time              │ 2026-08-06 13:29:14 │
+│ End Time              │ 2026-08-06 14:13:10 │
 ├───────────────────────┼─────────────────────┤
-│ System Time           │ 522.45s             │
+│ System Time           │ 1161.06s            │
 ├───────────────────────┼─────────────────────┤
-│ Game Time             │ 427.48s             │
+│ Game Time             │ 982.11s             │
 ├───────────────────────┼─────────────────────┤
-│ Ratio (Game / System) │ 0.818               │
+│ Ratio (Game / System) │ 0.846               │
 ╘═══════════════════════╧═════════════════════╛
 
  > Criteria Information
@@ -47,7 +47,7 @@ Actor(id=1190, type=walker.pedestrian.0002); Actor(id=1191, type=walker.pedestri
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │ lexus.utlexus (id=276) │ RouteCompletionTest (Req.)   │ FAILURE │ 0            │ 100           │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│                        │ Timeout (Req.)               │ SUCCESS │ 427.48       │ 18000.0       │
+│                        │ Timeout (Req.)               │ SUCCESS │ 982.11       │ 18000.0       │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │                        │ GLOBAL RESULT                │ FAILURE │              │               │
 ╘════════════════════════╧══════════════════════════════╧═════════╧══════════════╧═══════════════╛

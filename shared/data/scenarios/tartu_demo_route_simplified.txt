@@ -5,29 +5,29 @@
 Actor(id=276, type=vehicle.lexus.utlexus); 
 
  > NPC vehicles:
-Actor(id=371, type=vehicle.ford.mustang); Actor(id=372, type=vehicle.audi.tt); Actor(id=373, type=vehicle.vespa.zx125); Actor(id=374, type=vehicle.mitsubishi.fusorosa); Actor(id=375, type=vehicle.yamaha.yzf); Actor(id=376, type=vehicle.kawasaki.ninja); Actor(id=377, type=vehicle.mercedes.coupe); Actor(id=378, type=vehicle.volkswagen.t2_2021); Actor(id=379, type=vehicle.harley-davidson.low_rider); Actor(id=380, type=vehicle.mitsubishi.fusorosa); Actor(id=381, type=vehicle.tesla.cybertruck); 
+Actor(id=1604, type=vehicle.ford.mustang); Actor(id=1605, type=vehicle.audi.tt); Actor(id=1606, type=vehicle.vespa.zx125); Actor(id=1607, type=vehicle.mitsubishi.fusorosa); Actor(id=1608, type=vehicle.yamaha.yzf); Actor(id=1609, type=vehicle.kawasaki.ninja); Actor(id=1610, type=vehicle.mercedes.coupe); Actor(id=1611, type=vehicle.volkswagen.t2_2021); Actor(id=1612, type=vehicle.harley-davidson.low_rider); Actor(id=1613, type=vehicle.mitsubishi.fusorosa); Actor(id=1614, type=vehicle.tesla.cybertruck); 
 
  > Pedestrians:
-Actor(id=383, type=walker.pedestrian.0002); Actor(id=384, type=walker.pedestrian.0003); Actor(id=385, type=walker.pedestrian.0004); Actor(id=386, type=walker.pedestrian.0005); Actor(id=387, type=walker.pedestrian.0006); Actor(id=388, type=walker.pedestrian.0007); Actor(id=389, type=walker.pedestrian.0008); Actor(id=390, type=walker.pedestrian.0009); Actor(id=391, type=walker.pedestrian.0010); Actor(id=392, type=walker.pedestrian.0011); Actor(id=393, type=walker.pedestrian.0012); Actor(id=394, type=walker.pedestrian.0013); Actor(id=395, type=walker.pedestrian.0014); Actor(id=396, type=walker.pedestrian.0015); Actor(id=397, type=walker.pedestrian.0041); 
+Actor(id=1616, type=walker.pedestrian.0002); Actor(id=1617, type=walker.pedestrian.0003); Actor(id=1618, type=walker.pedestrian.0004); Actor(id=1619, type=walker.pedestrian.0005); Actor(id=1620, type=walker.pedestrian.0006); Actor(id=1621, type=walker.pedestrian.0007); Actor(id=1622, type=walker.pedestrian.0008); Actor(id=1623, type=walker.pedestrian.0009); Actor(id=1624, type=walker.pedestrian.0010); Actor(id=1625, type=walker.pedestrian.0011); Actor(id=1626, type=walker.pedestrian.0012); Actor(id=1627, type=walker.pedestrian.0013); Actor(id=1628, type=walker.pedestrian.0014); Actor(id=1629, type=walker.pedestrian.0015); Actor(id=1630, type=walker.pedestrian.0041); 
 
  > Simulation Information
 ╒═══════════════════════╤═════════════════════╕
-│ Start Time            │ 2026-08-06 12:32:55 │
+│ Start Time            │ 2026-08-06 14:23:24 │
 ├───────────────────────┼─────────────────────┤
-│ End Time              │ 2026-08-06 12:39:14 │
+│ End Time              │ 2026-08-06 14:25:13 │
 ├───────────────────────┼─────────────────────┤
-│ System Time           │ 378.84s             │
+│ System Time           │ 108.65s             │
 ├───────────────────────┼─────────────────────┤
-│ Game Time             │ 249.73s             │
+│ Game Time             │ 31.07s              │
 ├───────────────────────┼─────────────────────┤
-│ Ratio (Game / System) │ 0.659               │
+│ Ratio (Game / System) │ 0.286               │
 ╘═══════════════════════╧═════════════════════╛
 
  > Criteria Information
 ╒════════════════════════╤══════════════════════════════╤═════════╤══════════════╤═══════════════╕
 │ Actor                  │ Criterion                    │ Result  │ Actual Value │ Success Value │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│ lexus.utlexus (id=276) │ CollisionTest (Req.)         │ FAILURE │ 2            │ 0             │
+│ lexus.utlexus (id=276) │ CollisionTest (Req.)         │ SUCCESS │ 0            │ 0             │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │ lexus.utlexus (id=276) │ CheckKeepLane (Req.)         │ SUCCESS │ 0            │ 0             │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
@@ -43,11 +43,11 @@ Actor(id=383, type=walker.pedestrian.0002); Actor(id=384, type=walker.pedestrian
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │ lexus.utlexus (id=276) │ WrongLaneTest (Req.)         │ SUCCESS │ 0            │ 0             │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│ lexus.utlexus (id=276) │ InRouteTest (Req.)           │ FAILURE │ 1            │ 0             │
+│ lexus.utlexus (id=276) │ InRouteTest (Req.)           │ SUCCESS │ 0            │ 0             │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│ lexus.utlexus (id=276) │ RouteCompletionTest (Req.)   │ FAILURE │ 21.38        │ 100           │
+│ lexus.utlexus (id=276) │ RouteCompletionTest (Req.)   │ FAILURE │ 0            │ 100           │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│                        │ Timeout (Req.)               │ SUCCESS │ 249.73       │ 18000.0       │
+│                        │ Timeout (Req.)               │ SUCCESS │ 31.07        │ 18000.0       │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │                        │ GLOBAL RESULT                │ FAILURE │              │               │
 ╘════════════════════════╧══════════════════════════════╧═════════╧══════════════╧═══════════════╛

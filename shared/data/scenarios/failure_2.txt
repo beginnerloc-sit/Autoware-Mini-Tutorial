@@ -5,22 +5,22 @@
 Actor(id=276, type=vehicle.lexus.utlexus); 
 
  > NPC vehicles:
-Actor(id=1015, type=vehicle.ford.mustang); Actor(id=1016, type=vehicle.audi.tt); Actor(id=1017, type=vehicle.vespa.zx125); Actor(id=1018, type=vehicle.mitsubishi.fusorosa); Actor(id=1019, type=vehicle.yamaha.yzf); Actor(id=1020, type=vehicle.kawasaki.ninja); Actor(id=1021, type=vehicle.mercedes.coupe); Actor(id=1022, type=vehicle.volkswagen.t2_2021); Actor(id=1023, type=vehicle.harley-davidson.low_rider); Actor(id=1024, type=vehicle.mitsubishi.fusorosa); Actor(id=1025, type=vehicle.tesla.cybertruck); Actor(id=1026, type=vehicle.audi.a2); 
+Actor(id=1686, type=vehicle.ford.mustang); Actor(id=1687, type=vehicle.audi.tt); Actor(id=1688, type=vehicle.vespa.zx125); Actor(id=1689, type=vehicle.mitsubishi.fusorosa); Actor(id=1690, type=vehicle.yamaha.yzf); Actor(id=1691, type=vehicle.kawasaki.ninja); Actor(id=1692, type=vehicle.mercedes.coupe); Actor(id=1693, type=vehicle.volkswagen.t2_2021); Actor(id=1694, type=vehicle.harley-davidson.low_rider); Actor(id=1695, type=vehicle.mitsubishi.fusorosa); Actor(id=1696, type=vehicle.tesla.cybertruck); Actor(id=1697, type=vehicle.audi.a2); 
 
  > Pedestrians:
-Actor(id=1028, type=walker.pedestrian.0002); Actor(id=1029, type=walker.pedestrian.0003); Actor(id=1030, type=walker.pedestrian.0004); Actor(id=1031, type=walker.pedestrian.0005); Actor(id=1032, type=walker.pedestrian.0006); Actor(id=1033, type=walker.pedestrian.0007); Actor(id=1034, type=walker.pedestrian.0008); Actor(id=1035, type=walker.pedestrian.0009); Actor(id=1036, type=walker.pedestrian.0010); Actor(id=1037, type=walker.pedestrian.0011); Actor(id=1038, type=walker.pedestrian.0012); Actor(id=1039, type=walker.pedestrian.0013); Actor(id=1040, type=walker.pedestrian.0014); Actor(id=1041, type=walker.pedestrian.0015); Actor(id=1042, type=walker.pedestrian.0041); 
+Actor(id=1699, type=walker.pedestrian.0002); Actor(id=1700, type=walker.pedestrian.0003); Actor(id=1701, type=walker.pedestrian.0004); Actor(id=1702, type=walker.pedestrian.0005); Actor(id=1703, type=walker.pedestrian.0006); Actor(id=1704, type=walker.pedestrian.0007); Actor(id=1705, type=walker.pedestrian.0008); Actor(id=1706, type=walker.pedestrian.0009); Actor(id=1707, type=walker.pedestrian.0010); Actor(id=1708, type=walker.pedestrian.0011); Actor(id=1709, type=walker.pedestrian.0012); Actor(id=1710, type=walker.pedestrian.0013); Actor(id=1711, type=walker.pedestrian.0014); Actor(id=1712, type=walker.pedestrian.0015); Actor(id=1713, type=walker.pedestrian.0041); 
 
  > Simulation Information
 ╒═══════════════════════╤═════════════════════╕
-│ Start Time            │ 2026-08-06 13:12:25 │
+│ Start Time            │ 2026-08-06 14:28:13 │
 ├───────────────────────┼─────────────────────┤
-│ End Time              │ 2026-08-06 13:12:46 │
+│ End Time              │ 2026-08-06 14:28:29 │
 ├───────────────────────┼─────────────────────┤
-│ System Time           │ 20.71s              │
+│ System Time           │ 16.12s              │
 ├───────────────────────┼─────────────────────┤
-│ Game Time             │ 3.39s               │
+│ Game Time             │ 0.0s                │
 ├───────────────────────┼─────────────────────┤
-│ Ratio (Game / System) │ 0.164               │
+│ Ratio (Game / System) │ 0.0                 │
 ╘═══════════════════════╧═════════════════════╛
 
  > Criteria Information
@@ -45,9 +45,9 @@ Actor(id=1028, type=walker.pedestrian.0002); Actor(id=1029, type=walker.pedestri
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │ lexus.utlexus (id=276) │ InRouteTest (Req.)           │ SUCCESS │ 0            │ 0             │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│ lexus.utlexus (id=276) │ RouteCompletionTest (Req.)   │ FAILURE │ 0.8          │ 100           │
+│ lexus.utlexus (id=276) │ RouteCompletionTest (Req.)   │ FAILURE │ 2.34         │ 100           │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
-│                        │ Timeout (Req.)               │ SUCCESS │ 3.39         │ 18000.0       │
+│                        │ Timeout (Req.)               │ SUCCESS │ 0.0          │ 18000.0       │
 ├────────────────────────┼──────────────────────────────┼─────────┼──────────────┼───────────────┤
 │                        │ GLOBAL RESULT                │ FAILURE │              │               │
 ╘════════════════════════╧══════════════════════════════╧═════════╧══════════════╧═══════════════╛
