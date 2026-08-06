@@ -88,3 +88,11 @@ Your framework from the previous lessons is a simplified one. Remember all limit
 **Why it fails.** The planner reacts to the nearest constraint and nothing else. Green means no stop line, and the queue ahead is just an obstacle to stop behind. Both are correct on their own, but nobody checks whether there is space on the other side of the intersection before entering it.
 
 **Fix.** Check the free space after the junction and put a collision point at the junction entry if the car would not fit through.
+
+##### Failure case 4
+
+**Scenario.** A bus is stopped at a bus stop next to our lane, dropping off passengers. As the ego comes level with it the bus pulls out to merge back into the lane. The ego does not slow down or wait, so it ends up next to the bus while it is merging.
+
+**Why it fails.** While the bus is at the stop it sits outside the local path corridor, so it is not a collision point at all. Nothing predicts that it is about to pull out, and the framework has no rule that a bus leaving a stop has priority, so the ego keeps driving at full speed past it.
+
+**Fix.** Add a conditional stop line in front of bus stops: if the car reaches it while a bus is standing at the stop, stop and wait until the bus has merged back into the lane.
