@@ -66,10 +66,25 @@ Your framework from the previous lessons is a simplified one. Remember all limit
 5. Commit and push everything, and be ready to demonstrate your failure cases at the practice session
 
 ##### Failure case 1
-...
+
+**Scenario.** The ego drives towards a zebra crossing at the speed limit. A pedestrian is triggered to step onto the crossing as the car approaches. The car keeps its speed and hits the pedestrian from the side.
+
+**Why it fails.** The collision checker only sees objects that already overlap the local path. While the pedestrian is still on the kerb they do not exist for the planner, and their velocity is projected onto the path direction, so someone crossing sideways looks like a static object. By the time they are inside the safety corridor there is no distance left to brake in.
+
+**Fix.** Predict where objects are moving and check that against the local path, so a pedestrian heading for the road becomes a collision point before reaching it.
 
 ##### Failure case 2
-...
+
+**Scenario.** The ego comes out of a side road onto a main road. A car is approaching along the main road from behind the merge point. The ego pulls out in front of it and gets hit.
+
+**Why it fails.** Collision points are only made for objects on our own path ahead. The approaching car is still upstream of the point where we join, so it never touches our corridor and we treat the road as clear. The map also holds right of way information, but only traffic light regulatory elements are read, so the framework has no idea it should give way here.
+
+**Fix.** Read the right of way elements from the map and add a stop line collision point at the yield line while a car on the priority road is too close.
 
 ##### Failure case 3
-...
+
+**Scenario.** Two intersections close to each other. Traffic is queued from a red light at the second one and the queue reaches back across the first. Our light is green, the car drives in and stops inside the intersection, blocking the cross traffic.
+
+**Why it fails.** The planner reacts to the nearest constraint and nothing else. Green means no stop line, and the queue ahead is just an obstacle to stop behind. Both are correct on their own, but nobody checks whether there is space on the other side of the intersection before entering it.
+
+**Fix.** Check the free space after the junction and put a collision point at the junction entry if the car would not fit through.

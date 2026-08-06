@@ -128,13 +128,7 @@ class YoloTrafficLightDetector:
         #         and collect the ids of the stop lines that intersect with it
         #         into stop_line_ids_on_path.
         if local_path_msg.waypoints:
-            points = []
-            for wp in local_path_msg.waypoints:
-                # Create a shapely Point for each waypoint
-                point = shapely.Point(wp.position.x, wp.position.y)
-                points.append(point)
-            # Create a shapely LineString from the list of points
-            path_line = shapely.LineString(points)
+            path_line = shapely.LineString([(wp.position.x, wp.position.y) for wp in local_path_msg.waypoints])
             for stop_line_id, stop_line in self.stop_lines.items():
                 if path_line.intersects(stop_line):
                     stop_line_ids_on_path.append(stop_line_id)
