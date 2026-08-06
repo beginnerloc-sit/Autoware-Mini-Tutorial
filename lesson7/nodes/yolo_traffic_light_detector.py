@@ -265,11 +265,12 @@ class YoloTrafficLightDetector:
             #         Loop over the YOLO detections, calculate the IOU between the map ROI
             #         and the YOLO box, skip matches with IOU below self.iou_threshold and
             #         keep the one with the highest IOU:
+            best_iou = 0
             for idx, (cls, score, yolo_roi) in enumerate(zip(yolo_classes, yolo_scores, yolo_rois)):
                 iou_score = self.calculate_iou(np.array([[x1_map, y1_map, x2_map, y2_map]]), yolo_roi[np.newaxis, :])[0][0]
-                if iou_score >= self.iou_threshold:
-                    if matched_roi is None or iou_score > matched_roi[0]:
-                        matched_roi = (iou_score, cls, score, yolo_roi, idx)
+                if iou_score >= self.iou_threshold and iou_score > best_iou:
+                    best_iou = iou_score
+                    matched_roi = [cls, score, yolo_roi, idx]
 
             tfl_result = StopLineStatus()
             tfl_result.traffic_light_id = traffic_light_id
@@ -284,8 +285,8 @@ class YoloTrafficLightDetector:
                 # yolo ROI and map ROI were matched
                 # TODO 4: Fill in the status using CLASS_TO_TLRESULT
                 #         and the status_text using CLASS_TO_STRING.
-                tfl_result.status = CLASS_TO_TLRESULT[matched_roi[1]]
-                tfl_result.status_text = CLASS_TO_STRING[matched_roi[1]]
+                tfl_result.status = CLASS_TO_TLRESULT[matched_roi[0]]
+                tfl_result.status_text = CLASS_TO_STRING[matched_roi[0]]
                 match_dict[traffic_light_id] = matched_roi
 
             tfl_results.append(tfl_result)
@@ -371,7 +372,7 @@ class YoloTrafficLightDetector:
 
                 else:
                     # map roi was matched with a yolo roi
-                    _, cl, score, yolo_roi, yolo_idx = match_dict[traffic_light_id]
+                    cl, score, yolo_roi, yolo_idx = match_dict[traffic_light_id]
 
                     yolo_min_u, yolo_min_v, yolo_max_u, yolo_max_v = yolo_roi
                     matched_yolo_roi_idxs.append(yolo_idx)
